@@ -11,6 +11,6 @@ type (
 	List[T any] struct {
 		Current *T
 
-		Children []Node[T]
+		Children []Item[T]
 	}
 )
