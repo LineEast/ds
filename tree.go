@@ -1,12 +1,12 @@
 package btree
 
 type (
-	Tree[t any] Node[t]
+	Tree[T any] Node[T]
 
-	Node[t any] struct {
-		This t
+	Node[T any] struct {
+		This T
 
-		Parent   *Node[t]
-		Children []Node[t]
+		Parent   *Node[T]
+		Children []Node[T]
 	}
 )
