@@ -8,7 +8,6 @@ func (list *List[T]) DisplayList() {
 		DisplayError("Empty List")
 	} else {
 		current := list.head
-		log.Println(list)
 		for i := 0; uint(i) < list.len; i++ {
 			fmt.Println("Data:", current.Data, "\tPrev:", current.prev, "\tNext:", current.next)
 			current = current.next

@@ -8,3 +8,12 @@ func (list *List[T]) NodeAt(i uint) *Node[T] {
 	}
 	return current
 }
+
+func (list *List[T]) DeleteFirst() {
+	if list.len == 0 {
+		DisplayError("Empty List")
+	} else {
+		list.head = list.head.next
+		list.len--
+	}
+}
