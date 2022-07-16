@@ -9,7 +9,7 @@ func (list *List[T]) ReplaceAny(a T, i uint) {
 func (list *List[T]) Replace(node *Node[T], i uint) {
 	if i > list.len || i == 0 {
 		DisplayError("Index must be less than length and more than 0")
-		return
+	} else {
+		list.NodeAt(i).Data = node.Data
 	}
-	list.NodeAt(i).Data = node.Data
 }

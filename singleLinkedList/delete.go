@@ -12,15 +12,13 @@ func (list *List[T]) NodeAt(i uint) *Node[T] {
 func (list *List[T]) DeleteIndex(i uint) {
 	if i > list.len || i == 0 {
 		DisplayError("Index must be less than length and more than 0")
-		return
-	}
-	if list.len == i {
+	} else if list.len == i {
 		list.DeleteLast()
 	} else if i == 1 {
 		list.DeleteFirst()
 	} else {
-		currentPrev := list.NodeAt(i - 1)
-		currentPrev.next = list.NodeAt(i).next
+		tmp := list.NodeAt(i - 1)
+		tmp.next = tmp.next.next
 		list.len--
 	}
 }
@@ -39,8 +37,6 @@ func (list *List[T]) DeleteLast() {
 	for current.next.next != nil {
 		current = current.next
 	}
-
 	current.next = nil
-
 	list.len--
 }
