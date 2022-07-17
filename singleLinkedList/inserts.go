@@ -1,6 +1,6 @@
 package singlelinkedlist
 
-func (list *List) InsertFirst(node *Node) {
+func (list *List[T]) InsertFirst(node *Node[T]) {
 	if list.head == nil {
 		list.head = node
 	} else {
@@ -11,12 +11,12 @@ func (list *List) InsertFirst(node *Node) {
 	list.len++
 }
 
-func (list *List) InsertFirstAny(a any) {
-	node := &Node{Data: a}
+func (list *List[T]) InsertFirstAny(a T) {
+	node := &Node[T]{Data: a}
 	list.InsertFirst(node)
 }
 
-func (list *List) InsertLast(node *Node) {
+func (list *List[T]) InsertLast(node *Node[T]) {
 	if list.head == nil {
 		list.InsertFirst(node)
 		return
@@ -29,17 +29,17 @@ func (list *List) InsertLast(node *Node) {
 	list.len++
 }
 
-func (list *List) InsertLastAny(a any) {
-	node := &Node{Data: a}
+func (list *List[T]) InsertLastAny(a T) {
+	node := &Node[T]{Data: a}
 	list.InsertLast(node)
 }
 
-func (list *List) InsertIndexAny(a any, i uint) {
-	node := &Node{Data: a}
+func (list *List[T]) InsertIndexAny(a T, i uint) {
+	node := &Node[T]{Data: a}
 	list.InsertIndex(node, i)
 }
 
-func (list *List) InsertIndex(node *Node, i uint){
+func (list *List[T]) InsertIndex(node *Node[T], i uint){
 	if i > list.len + 1 || i == 0 {
 		DisplayError("Index must be in range of 0 and length + 1")
 		return

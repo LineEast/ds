@@ -1,5 +1,5 @@
 package singlelinkedlist
 
-func Init() *List{
-	return new(List)
+func Init[T any]() *List[T]{
+	return new(List[T])
 }

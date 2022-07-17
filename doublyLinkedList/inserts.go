@@ -1,34 +1,35 @@
 package doublylinkedlist
 
-// import "log"
+func (list *List[T]) InsertFirstAny(a T) {
+	node := &Node[T]{Data: a}
+	list.InsertFirst(node)
+}
 
-func (list *List[T]) InsertFirst(node T) {
-	n := &Node[T]{Data: node}
-
+func (list *List[T]) InsertFirst(node *Node[T]) {
 	if list.head == nil {
-		list.head = n
-		list.tail = n
+		list.head = node
+		list.tail = node
 	} else {
-		n.next = list.head
-		list.head = n
+		node.next = list.head
+		list.head = node
 		list.head.next.prev = list.head
-		// log.Println(list.tail)
 	}
 
 	list.len++
 }
 
-func (list *List[T]) InsertLast(node T) {
+func (list *List[T]) InsertLastAny(a T) {
+	node := &Node[T]{Data: a}
+	list.InsertLast(node)
+}
+
+func (list *List[T]) InsertLast(node *Node[T]) {
 	if list.len < 1 {
 		list.InsertFirst(node)
 	} else {
-		t := list.tail
-
-		list.tail = &Node[T]{Data: node, prev: t}
-
-		t.next = list.tail
-
-
+		tmp := list.tail
+		list.tail = &Node[T]{Data: node.Data, prev: tmp}
+		tmp.next = list.tail
 		list.len++
 	}
 }

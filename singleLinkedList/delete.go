@@ -1,6 +1,6 @@
 package singlelinkedlist
 
-func (list *List) NodeAt(i uint) *Node {
+func (list *List[T]) NodeAt(i uint) *Node[T] {
 	current := list.head
 	for i > 1 {
 		current = current.next
@@ -9,23 +9,21 @@ func (list *List) NodeAt(i uint) *Node {
 	return current
 }
 
-func (list *List) DeleteIndex(i uint) {
+func (list *List[T]) DeleteIndex(i uint) {
 	if i > list.len || i == 0 {
 		DisplayError("Index must be less than length and more than 0")
-		return
-	}
-	if list.len == i {
+	} else if list.len == i {
 		list.DeleteLast()
 	} else if i == 1 {
 		list.DeleteFirst()
 	} else {
-		currentPrev := list.NodeAt(i - 1)
-		currentPrev.next = list.NodeAt(i).next
+		tmp := list.NodeAt(i - 1)
+		tmp.next = tmp.next.next
 		list.len--
 	}
 }
 
-func (list *List) DeleteFirst() {
+func (list *List[T]) DeleteFirst() {
 	if list.head.next == nil {
 		list.head = nil
 	} else {
@@ -34,13 +32,11 @@ func (list *List) DeleteFirst() {
 	list.len--
 }
 
-func (list *List) DeleteLast() {
+func (list *List[T]) DeleteLast() {
 	current := list.head
 	for current.next.next != nil {
 		current = current.next
 	}
-
 	current.next = nil
-
 	list.len--
 }

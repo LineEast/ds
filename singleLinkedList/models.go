@@ -1,13 +1,13 @@
 package singlelinkedlist
 
 type (
-	Node struct {
-		Data any
-		next *Node
+	Node[T any] struct {
+		Data T
+		next *Node[T]
 	}
 
-	List struct {
+	List[T any] struct {
 		len  uint
-		head *Node
+		head *Node[T]
 	}
 )
