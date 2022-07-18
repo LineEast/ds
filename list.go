@@ -52,17 +52,21 @@ func (list *List[T]) PushTail(object T) {
 	list.Tail = node
 }
 
-func (list *List[T]) Each(action func(object T)) {
-	node := list.Head
+func (list *List[T]) PopHead() (object T, ok bool) {
+	head := list.Head
 
-	for node != nil {
-		action(node.Value)
-
-		node = node.Next
+	if head == nil {
+		return
 	}
+
+	list.Head = head.Next
+
+	object = head.Value
+	ok = true
+	return
 }
 
-func (list *List[T]) Pop() (object T, ok bool) {
+func (list *List[T]) PopTail() (object T, ok bool) {
 	tail := list.Tail
 
 	if tail == nil {
@@ -74,4 +78,14 @@ func (list *List[T]) Pop() (object T, ok bool) {
 	object = tail.Value
 	ok = true
 	return
+}
+
+func (list *List[T]) Each(action func(object T)) {
+	node := list.Head
+
+	for node != nil {
+		action(node.Value)
+
+		node = node.Next
+	}
 }
