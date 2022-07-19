@@ -12,6 +12,7 @@ func (list *List[T]) DisplayList() {
 			fmt.Println("Data:", current.Data, "\tPrev:", current.prev, "\tNext:", current.next)
 			current = current.next
 		}
+		fmt.Println("-------------------")
 	}
 }
 
