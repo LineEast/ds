@@ -1,5 +1,5 @@
 package binarytree
 
-func (tree *Tree) Init() *Tree {
+func Init() *Tree {
 	return new(Tree)
 }
