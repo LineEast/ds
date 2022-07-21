@@ -33,3 +33,23 @@ func (list *List[T]) InsertLast(node *Node[T]) {
 		list.len++
 	}
 }
+
+func (list *List[T]) InsertIndexAny(a T, i uint) {
+	node := &Node[T]{Data: a}
+	list.InsertIndex(node, i)
+}
+
+func (list *List[T]) InsertIndex(node *Node[T], i uint) {
+	if list.len < 1 {
+		list.InsertFirst(node)
+	} else if list.len == i {
+		list.DeleteLast()
+	}
+	tmp := list.NodeAt(i)
+	node.prev = tmp.prev
+	node.next = tmp
+	tmp.prev.next = node
+	tmp = node
+	tmp.next.prev = node
+	list.len++
+}
