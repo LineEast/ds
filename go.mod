@@ -1,3 +1,3 @@
-module github.com/go-asphyxia/data
+module data
 
 go 1.18
