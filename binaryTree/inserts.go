@@ -13,8 +13,7 @@ func (tree *Tree) Insert(node *Tree) {
 		return
 	}
 	if node.Data == 0 {
-		log.Println("Insert can't be zero.")
-		return
+		panic("Insert can't be zero.")
 	}
 	if tree.Data == node.Data {
 		log.Println("Value in Tree already exist. Skipping Insert. ¯\\_(ツ)_/¯")
