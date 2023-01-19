@@ -45,7 +45,7 @@ func (list *List[T]) PushTail(data T) {
 	list.Tail = node
 }
 
-func (list *List[T]) PopHead() (data T, ok bool) {
+func (list *List[T]) PopHead() (data T, exists bool) {
 	head := list.Head
 
 	if head == nil {
@@ -55,11 +55,11 @@ func (list *List[T]) PopHead() (data T, ok bool) {
 	list.Head = head.Next
 
 	data = head.Data
-	ok = true
+	exists = true
 	return
 }
 
-func (list *List[T]) PopTail() (data T, ok bool) {
+func (list *List[T]) PopTail() (data T, exists bool) {
 	tail := list.Tail
 
 	if tail == nil {
@@ -69,18 +69,38 @@ func (list *List[T]) PopTail() (data T, ok bool) {
 	list.Tail = tail.Previous
 
 	data = tail.Data
-	ok = true
+	exists = true
 	return
 }
 
 func (list *List[T]) Each(action func(data T)) {
 	node := list.Head
 
-	for node != nil {
-		action(node.Data)
+action:
+	action(node.Data)
+	node = node.Next
 
-		node = node.Next
+	if node != nil {
+		goto action
 	}
+}
+
+func (list *List[T]) Find(equal func(data, clue T) bool, clue T) (node *Node[T], found bool) {
+	node = list.Head
+
+equal:
+	if node == nil {
+		return
+	}
+
+	found = equal(node.Data, clue)
+
+	if found == false {
+		node = node.Next
+		goto equal
+	}
+
+	return
 }
 
 func (node *Node[T]) PushHead(list *List[T]) {
@@ -131,4 +151,44 @@ func (node *Node[T]) PopTail(list *List[T]) bool {
 	node.Previous = nil
 
 	return true
+}
+
+func (node *Node[T]) Remove(list *List[T]) {
+	head := list.Head
+	tail := list.Tail
+
+	if head == nil {
+		goto clear
+	}
+
+	if head == node {
+		list.Head = head.Next
+
+		goto clear
+	}
+
+check:
+	if head.Next == nil {
+		goto clear
+	}
+
+	head = head.Next
+
+	if head == node {
+		head.Previous.Next = head.Next
+
+		if head == tail {
+			list.Tail = head.Previous
+		} else {
+			head.Next.Previous = head.Previous
+		}
+
+		goto clear
+	}
+
+	goto check
+
+clear:
+	node.Previous = nil
+	node.Next = nil
 }
