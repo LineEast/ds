@@ -95,3 +95,43 @@ func (node *Node[T]) PopHead(list *List[T]) bool {
 
 	return true
 }
+
+func (node *Node[T]) Remove(list *List[T]) {
+	head := list.Head
+	tail := list.Tail
+
+	previous := (*Node[T])(nil)
+
+	if head == nil {
+		goto clear
+	}
+
+	if head == node {
+		list.Head = head.Next
+
+		goto clear
+	}
+
+check:
+	if head.Next == nil {
+		goto clear
+	}
+
+	previous = head
+	head = head.Next
+
+	if head == node {
+		previous.Next = head.Next
+
+		if head == tail {
+			list.Tail = previous
+		}
+
+		goto clear
+	}
+
+	goto check
+
+clear:
+	node.Next = nil
+}
