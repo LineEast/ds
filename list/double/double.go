@@ -155,7 +155,6 @@ func (node *Node[T]) PopTail(list *List[T]) bool {
 
 func (node *Node[T]) Remove(list *List[T]) {
 	head := list.Head
-	tail := list.Tail
 
 	if head == nil {
 		goto clear
@@ -177,7 +176,7 @@ check:
 	if head == node {
 		head.Previous.Next = head.Next
 
-		if head == tail {
+		if head == list.Tail {
 			list.Tail = head.Previous
 		} else {
 			head.Next.Previous = head.Previous

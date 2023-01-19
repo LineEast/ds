@@ -98,7 +98,6 @@ func (node *Node[T]) PopHead(list *List[T]) bool {
 
 func (node *Node[T]) Remove(list *List[T]) {
 	head := list.Head
-	tail := list.Tail
 
 	previous := (*Node[T])(nil)
 
@@ -123,7 +122,7 @@ check:
 	if head == node {
 		previous.Next = head.Next
 
-		if head == tail {
+		if head == list.Tail {
 			list.Tail = previous
 		}
 
