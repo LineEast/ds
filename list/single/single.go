@@ -1,13 +1,13 @@
 package single
 
 type (
+	List[T any] struct {
+		Head, Tail *Node[T]
+	}
+
 	Node[T any] struct {
 		Next *Node[T]
 		Data T
-	}
-
-	List[T any] struct {
-		Head, Tail *Node[T]
 	}
 )
 
@@ -49,4 +49,29 @@ func (list *List[T]) Each(action func(data T)) {
 
 		node = node.Next
 	}
+}
+
+func (node *Node[T]) PushTail(list *List[T]) {
+	tail := list.Tail
+
+	if tail != nil {
+		tail.Next = node
+	} else {
+		list.Head = node
+	}
+
+	list.Tail = node
+}
+
+func (node *Node[T]) PopHead(list *List[T]) bool {
+	node = list.Head
+
+	if node == nil {
+		return false
+	}
+
+	list.Head = node.Next
+	node.Next = nil
+
+	return true
 }
