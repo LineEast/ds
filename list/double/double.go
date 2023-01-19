@@ -1,4 +1,4 @@
-package list
+package double
 
 type (
 	List[T any] struct {
