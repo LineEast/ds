@@ -1,12 +1,16 @@
 package general
 
+import (
+	"github.com/go-asphyxia/data/list/single"
+)
+
 type (
-	Node[T any] struct {
-		Previous, Next *Node[T]
-		Data           T
+	Tree[T any] struct {
+		Children *single.List[Node[T]]
 	}
 
-	Tree[T any] struct {
-		Head, Tail *Node[T]
+	Node[T any] struct {
+		Children *single.List[Node[T]]
+		Data     T
 	}
 )
