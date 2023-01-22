@@ -9,6 +9,11 @@ type (
 		Previous, Next *Node[T]
 		Data           T
 	}
+
+	Iterable[T any] struct {
+		Root *Node[T]
+		Node *Node[T]
+	}
 )
 
 func (list *List[T]) PushHead(data T) {
@@ -103,6 +108,12 @@ equal:
 	return
 }
 
+func (list *List[T]) Iterable() *Iterable[T] {
+	return &Iterable[T]{
+		Root: list.Head,
+	}
+}
+
 func (node *Node[T]) PushHead(list *List[T]) {
 	head := list.Head
 
@@ -190,4 +201,24 @@ check:
 clear:
 	node.Previous = nil
 	node.Next = nil
+}
+
+func (node *Node[T]) Iterable() *Iterable[T] {
+	return &Iterable[T]{
+		Root: node,
+	}
+}
+
+func (iterable *Iterable[T]) Next() bool {
+	if iterable.Node != nil {
+		iterable.Node = iterable.Node.Next
+	} else {
+		iterable.Node = iterable.Root
+	}
+
+	if iterable.Node != nil {
+		return true
+	}
+
+	return false
 }
