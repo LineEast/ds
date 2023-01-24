@@ -11,10 +11,10 @@ type (
 // Get new single ordered linked list
 //
 // All methods with list from l.List
-func NewOrderdList[T any](f func(v1, v2 T) bool) *SinglyOrdered[T] {
+func NewOrderdList[T any](c func(v1, v2 T) bool) *SinglyOrdered[T] {
 	return &SinglyOrdered[T]{
 		List:    New[T](),
-		Compare: f,
+		Compare: c,
 	}
 }
 
@@ -24,7 +24,7 @@ func (l *SinglyOrdered[T]) Push(body T) {
 		body: body,
 	}
 
-	if l.List.IsEmpty() {
+	if l.List.root == nil {
 		l.List.root = node
 		l.List.tail = node
 
