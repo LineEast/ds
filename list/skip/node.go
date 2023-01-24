@@ -7,3 +7,7 @@ type (
 		next, prev, down *node[T]
 	}
 )
+
+func (n *node[T]) Body() T {
+	return n.body
+}

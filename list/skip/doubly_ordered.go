@@ -16,3 +16,7 @@ func (l *doublyOrdered[T]) Push(b T) (node *node[T]) {
 
 	return
 }
+
+func (l *doublyOrdered[T]) PushNode(n *node[T]) {
+
+}

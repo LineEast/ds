@@ -10,14 +10,38 @@ type (
 		mainList *doublyOrdered[doublyOrdered[T]]
 
 		maxLevel uint
-		rand     *rand.Rand
+		rand     *boolgen
 
-		compare func(a, b T) bool
+		compare  func(a, b T) bool
+		compare2 func(a, b T) int8
+	}
+
+	boolgen struct {
+		src       rand.Source
+		cache     int64
+		remaining int
 	}
 )
 
+const (
+	Equel int8 = iota // 0
+	More              // 1
+	Less              // 2
+)
+
+func (b *boolgen) Bool() bool {
+	if b.remaining == 0 {
+		b.cache, b.remaining = b.src.Int63(), 63
+	}
+
+	result := b.cache&0x01 == 1
+	b.cache >>= 1
+	b.remaining--
+
+	return result
+}
+
 func New[T any](compare func(a, b T) bool, maxlvl uint) *SkipList[T] {
-	source := rand.NewSource(time.Now().UnixNano())
 	if maxlvl == 0 {
 		maxlvl = 32
 	}
@@ -33,7 +57,7 @@ func New[T any](compare func(a, b T) bool, maxlvl uint) *SkipList[T] {
 	return &SkipList[T]{
 		mainList: l,
 		maxLevel: maxlvl,
-		rand:     rand.New(source),
+		rand:     &boolgen{src: rand.NewSource(time.Now().UnixNano())},
 		compare:  compare,
 	}
 }
@@ -57,7 +81,8 @@ func (l *SkipList[T]) Push(body T) (node *node[T]) {
 					continue mainList
 				} else if l.compare(body, subListNode.body) {
 					if subListNode.down == nil {
-						mainListNode.body.Push(body)
+						mainListNode.body.PushNode(node)
+						break mainList
 					}
 
 					if subListNode.next == nil || (subListNode.next != nil && l.compare(subListNode.next.body, body)) {
@@ -69,6 +94,53 @@ func (l *SkipList[T]) Push(body T) (node *node[T]) {
 				}
 			}
 		}
+	}
+
+	for mainListNode := l.mainList.head.next; mainListNode != nil; mainListNode = mainListNode.next {
+		if !l.rand.Bool() {
+			break
+		}
+
+		mainListNode.body.PushNode(node)
+	}
+
+	return
+}
+
+func (l *SkipList[T]) Find(body T) (node *node[T]) {
+mainList:
+	for mainList := l.mainList.tail; mainList != nil; {
+		for subList := mainList.body.head; subList != nil; {
+			switch l.compare2(subList.body, body) {
+			case Equel:
+				for node = subList; node.down != nil; node = node.down {
+				}
+				return
+			case More:
+				continue mainList
+			case Less:
+				r := l.compare2(subList.next.body, body)
+				if r == Equel {
+					for node = subList.next; node.down != nil; node = node.down {
+					}
+					return
+				} else if r == More {
+					if subList.down == nil {
+						node = subList
+						return
+					}
+
+					subList = subList.down
+					mainList = mainList.down
+
+					continue mainList
+				}
+			}
+
+			subList = subList.next
+		}
+
+		mainList = mainList.prev
 	}
 
 	return
