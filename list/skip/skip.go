@@ -73,27 +73,10 @@ func (l *SkipList[T]) Push(body T) (node *node[T]) {
 		l.mainList.head.body.tail.next = node
 		l.mainList.head.body.tail = node
 	} else {
-	mainList:
-		for mainListNode := l.mainList.tail; mainListNode != nil; mainListNode = mainListNode.prev {
-			// subList:
-			for subListNode := mainListNode.body.head; subListNode != nil; {
-				if l.compare(subListNode.body, body) {
-					continue mainList
-				} else if l.compare(body, subListNode.body) {
-					if subListNode.down == nil {
-						mainListNode.body.PushNode(node)
-						break mainList
-					}
+		prev := l.Find(body)
 
-					if subListNode.next == nil || (subListNode.next != nil && l.compare(subListNode.next.body, body)) {
-						subListNode = subListNode.down
-						mainListNode = mainListNode.down
-					} else {
-						subListNode = subListNode.next
-					}
-				}
-			}
-		}
+		node.next = prev
+		prev.next = node
 	}
 
 	for mainListNode := l.mainList.head.next; mainListNode != nil; mainListNode = mainListNode.next {
@@ -101,7 +84,6 @@ func (l *SkipList[T]) Push(body T) (node *node[T]) {
 			break
 		}
 
-		mainListNode.body.PushNode(node)
 	}
 
 	return
@@ -145,21 +127,3 @@ mainList:
 
 	return
 }
-
-// // if l.compare(subListNode.body, body) { // if slN.body > body
-// if subListNode.next == nil {
-// 	continue mainList
-// } else if  {
-
-// } else if l.compare(body, subListNode.body) && subListNode.down != nil { // if body > sbL.body
-// 	continue subList
-// }
-
-// if l.compare(subListNode.body, body) { // if slN.body > body
-// 	continue mainlist
-// } else if l.compare(body, subListNode.body) && subListNode.down != nil { // if body > slN.body
-// 	mainListNode = mainListNode.down
-// 	subListNode = subListNode.prev.down
-
-// 	continue
-// }
