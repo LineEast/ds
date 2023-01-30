@@ -4,7 +4,7 @@ type (
 	node[T any] struct {
 		body T
 
-		next, prev, down *node[T]
+		next, prev, down, up *node[T]
 	}
 )
 

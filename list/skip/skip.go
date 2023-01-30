@@ -76,14 +76,17 @@ func (l *SkipList[T]) Push(body T) (node *node[T]) {
 		prev := l.Find(body)
 
 		node.next = prev
+		prev.next.prev = node
+
 		prev.next = node
-	}
 
-	for mainListNode := l.mainList.head.next; mainListNode != nil; mainListNode = mainListNode.next {
-		if !l.rand.Bool() {
-			break
+		for mainListNode := l.mainList.head.next; mainListNode != nil; mainListNode = mainListNode.next {
+			if !l.rand.Bool() {
+				break
+			}
+
+			node.up =
 		}
-
 	}
 
 	return

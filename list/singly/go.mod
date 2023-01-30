@@ -1,3 +1,3 @@
-module github.com/go-asphyxia/ds/list/singly
+module github.com/LineEast/ds/list/singly
 
 go 1.20
